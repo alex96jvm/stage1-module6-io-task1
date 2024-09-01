@@ -3,6 +3,8 @@ package com.epam.mjc.io;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FileReader {
 
@@ -11,6 +13,7 @@ public class FileReader {
     private static final String EMAIL_KEY = "email";
     private static final String PHONE_KEY = "phone";
     private static final Profile defaultProfile = new Profile("Unknown", 0, "unknown@example.com", 0L);
+    private static final Logger logger = Logger.getLogger(com.epam.mjc.io.FileReader.class.getName());
 
     public Profile getDataFromFile(File file) {
 
@@ -25,11 +28,10 @@ public class FileReader {
                 }
             }
         } catch (IOException e) {
-            System.err.println("Ошибка при чтении файла " + file.getName());
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Ошибка при чтении файла " + file.getName(), e);
             return defaultProfile;
         }
-
+        // TODO: добавить проверку на null значений из profileMap
         try {
             String name = profileMap.get(NAME_KEY);
             Integer age = Integer.valueOf(profileMap.get(AGE_KEY));
@@ -37,8 +39,7 @@ public class FileReader {
             Long phone = Long.valueOf(profileMap.get(PHONE_KEY));
             return new Profile(name, age, email, phone);
         } catch (NumberFormatException e) {
-            System.err.println("Ошибка при преобразовании данных из файла " + file.getName());
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Ошибка при преобразовании данных из файла " + file.getName(), e);
             return defaultProfile;
         }
     }
