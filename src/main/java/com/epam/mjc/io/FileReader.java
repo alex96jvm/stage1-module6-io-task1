@@ -28,10 +28,10 @@ public class FileReader {
                 }
             }
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Ошибка при чтении файла " + file.getName(), e);
+            logger.log(Level.SEVERE, String.format("Ошибка при чтении файла %s", file.getName()), e);
             return defaultProfile;
         }
-        // TODO: добавить проверку на null значений из profileMap
+
         try {
             String name = profileMap.get(NAME_KEY);
             Integer age = Integer.valueOf(profileMap.get(AGE_KEY));
@@ -39,7 +39,7 @@ public class FileReader {
             Long phone = Long.valueOf(profileMap.get(PHONE_KEY));
             return new Profile(name, age, email, phone);
         } catch (NumberFormatException e) {
-            logger.log(Level.SEVERE, "Ошибка при преобразовании данных из файла " + file.getName(), e);
+            logger.log(Level.SEVERE, String.format("Ошибка при преобразовании данных из файла %s", file.getName()), e);
             return defaultProfile;
         }
     }
